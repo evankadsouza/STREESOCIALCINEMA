@@ -1,0 +1,30 @@
+userID,optionSelected,videoDataID,questionTypeID,userName,cardID,phoneNumber,dateAndTime,correctOption,questionDesc
+34,ALia,11,1,evanka,evan123,8888888888,Tue Feb 20 2024 15:55:17 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+35,YES,11,1,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:15:52 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+36,DRY,11,2,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:16:22 GMT+0530 (India Standard Time),NIL,Skin type?
+37,5 - EXCELLENT,11,3,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:16:49 GMT+0530 (India Standard Time),NIL,Rate the AD?
+38,DRY,11,2,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:19:46 GMT+0530 (India Standard Time),NIL,Skin type?
+39,DRY,11,2,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:35:54 GMT+0530 (India Standard Time),NIL,Skin type?
+40,YES,11,1,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 16:37:21 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+41,YES,11,1,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 17:44:34 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+42,DRY,11,2,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 17:45:01 GMT+0530 (India Standard Time),NIL,Skin type?
+43,5 - EXCELLENT,11,3,test1 userone,644CB3AE,9485464649,Tue Feb 20 2024 17:45:22 GMT+0530 (India Standard Time),NIL,Rate the AD?
+44,YES,11,1,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 10:56:23 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+45,NORMAL,11,2,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 10:57:30 GMT+0530 (India Standard Time),NIL,Skin type?
+46,5 - EXCELLENT,11,3,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 10:58:35 GMT+0530 (India Standard Time),NIL,Rate the AD?
+47,YES,11,1,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 11:00:20 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+48,COMBINATION
+(OILY & DRY),11,2,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 11:01:22 GMT+0530 (India Standard Time),NIL,Skin type?
+49,2 - BAD,11,3,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 11:02:30 GMT+0530 (India Standard Time),NIL,Rate the AD?
+50,YES,11,1,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:24:31 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+51,OILY,11,2,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:25:37 GMT+0530 (India Standard Time),NIL,Skin type?
+52,3 - AVERAGE,11,3,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:26:34 GMT+0530 (India Standard Time),NIL,Rate the AD?
+53,TAMANNAH,11,4,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:27:23 GMT+0530 (India Standard Time),Tammanah,Which Actress?
+54,YES,11,1,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:30:52 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+55,DRY,11,2,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:31:20 GMT+0530 (India Standard Time),NIL,Skin type?
+56,5 - EXCELLENT,11,3,test1 userone,644CB3AE,9485464649,Wed Feb 21 2024 12:31:54 GMT+0530 (India Standard Time),NIL,Rate the AD?
+68,YES,11,1,user one,D744CBBB,9484261616,Wed Feb 21 2024 13:07:50 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+69,YES,11,1,user two,CF4A4998,8751664646,Wed Feb 21 2024 13:07:51 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+70,YES,11,1,user three,5047ACB9,7542619166,Wed Feb 21 2024 13:07:53 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+71,YES,11,1,user one,D744CBBB,9484261616,Wed Feb 21 2024 13:18:44 GMT+0530 (India Standard Time),NIL,Would you like to try this lipstick?
+72,DRY,11,2,user one,D744CBBB,9484261616,Wed Feb 21 2024 13:19:08 GMT+0530 (India Standard Time),NIL,Skin type?
