@@ -2,12 +2,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Scheduler from './views/scheduler.js';
-import { Navbar } from './views/navbar.js';
-import { Theateroperator } from './views/theaterOperator.js';
-import { VideoPlayer } from './views/videoPlayer.js';
-import UploadForm from './views/videoUploadForm.js';
-import { UserResponse } from './views/userResponse.js';
+import Scheduler from './components/scheduler.js';
+import { Navbar } from './components/navbar.js';
+import { Theateroperator } from './components/theaterOperator.js';
+import { VideoPlayer } from './components/videoPlayer.js';
+import UploadForm from './components/videoUploadForm.js';
+import { UserResponse } from './components/userResponse.js';
 
 
 

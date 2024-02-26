@@ -92,15 +92,15 @@ const Scheduler = () => {
   // Inside handleSaveClick function
 const handleSaveClick = async (schedulerIndex) => {
     const schedulerData = {
-      theater_id: selectedTheater,
+      theatre_id: selectedTheater,
       start_date: startDates[schedulerIndex].toISOString().slice(0, 19).replace('T', ' '), // Convert to MySQL datetime format
-      scheduler_index: schedulerIndex + 1,
+      slot_index: schedulerIndex + 1,
       video_links: selectedSchedules[schedulerIndex].map((videoLink, index) => ({[`videoLink`]: videoLink.replace(/\\/g, '/') || null, })),
-      errors: errors[schedulerIndex],
+      
   };
 console.log(schedulerData);
  try {
-    const response = await fetch('http://localhost:8010/api/saveSchedulerData', {
+    const response = await fetch('http://192.168.0.113:8010/api/saveSchedulerData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ console.log(schedulerData);
       body: JSON.stringify(schedulerData),
     });
     if (response.ok) {
-      const data = await response.json();
+      const data = response.json();
       alert('Data saved successfully:', data);
     } else {
       console.error('Error saving data:', response.statusText);

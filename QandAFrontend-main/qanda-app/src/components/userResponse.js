@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../styles/userResponse.css";
 
 export const UserResponse = () => {
   const [userResponse, setUserResponse] = useState([]);
-  const [filteredCardID, setFilteredCardID] = useState('');
-  const [filteredPhoneNumber, setFilteredPhoneNumber] = useState('');
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://192.168.0.113:8010/api/getUserResponse');
-        const data = await response.json();
-        setUserResponse(data.result);
-      } catch (error) {
-        console.error('Error fetching user response:', error);
-      }
-    };
+  const [filteredCardID, setFilteredCardID] = useState("");
+  const [filteredPhoneNumber, setFilteredPhoneNumber] = useState("");
 
+  const fetchData = async () => {
+    try {
+      const response =  await fetch("http://localhost:8010/api/getUserResponse");
+      const data =   await response.json();
+      console.log("result", (data));
+      return
+      setUserResponse(data.result);
+    } catch (error) {
+       console.error("Error fetching user response:", error);
+     }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -28,21 +30,31 @@ export const UserResponse = () => {
     setFilteredPhoneNumber(event.target.value);
   };
 
-  const filteredUserResponse = userResponse.filter(response =>
-    response.cardID.includes(filteredCardID) &&
-    response.phoneNumber.includes(filteredPhoneNumber)
+  const filteredUserResponse = userResponse.filter(
+    (response) =>
+      response.cardID.includes(filteredCardID) &&
+      response.phoneNumber.includes(filteredPhoneNumber)
   );
-
+   
   return (
+ 
     <div className="container">
       <h2>User Response Details</h2>
       <div className="filter-container">
         <label>Filter by Card ID:</label>
-        <input type="text" value={filteredCardID} onChange={handleCardIDChange} />
+        <input
+          type="text"
+          value={filteredCardID}
+          onChange={handleCardIDChange}
+        />
       </div>
       <div className="filter-container">
         <label>Filter by Phone Number:</label>
-        <input type="text" value={filteredPhoneNumber} onChange={handlePhoneNumberChange} />
+        <input
+          type="text"
+          value={filteredPhoneNumber}
+          onChange={handlePhoneNumberChange}
+        />
       </div>
       {filteredUserResponse.length > 0 ? (
         <table>
@@ -58,12 +70,16 @@ export const UserResponse = () => {
               <th>Option Selected</th>
               <th>Correct Option</th>
               <th>User Answer</th>
-              </tr>
+            </tr>
           </thead>
           <tbody>
             {filteredUserResponse.reverse().map((userResponse, index) => (
-              <tr key={userResponse.userResponseID} className="user-response-details">
-                <td>{index + 1}</td>
+              <tr
+                key={userResponse.userResponseID}
+                className="user-response-details"
+              >
+                <td>{userResponse.createdAt}</td>
+                {/* <td>{index + 1}</td>
                 <td>{userResponse.dateAndTime!=null?(new Date(userResponse.dateAndTime)).toLocaleString():''}</td>
                 <td>{userResponse.userName}</td>
                 <td>{userResponse.userID}</td>
@@ -79,7 +95,7 @@ export const UserResponse = () => {
                       : userResponse.correctOption === 'NIL'
                       ? 'N/A'
                       : 'Wrong Answer'}{' '}
-                  </td>
+                    </td> */}
               </tr>
             ))}
           </tbody>
@@ -87,6 +103,13 @@ export const UserResponse = () => {
       ) : (
         <p>No matching user responses found.</p>
       )}
-    </div>
+      </div>
+
+    
   );
 };
+
+
+
+
+

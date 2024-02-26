@@ -207,14 +207,14 @@ export const Theateroperator = () => {
     filteredSchedulerData = (filteredSchedulerData).map(item => {
       return {
           ...item,
-          video_links: JSON.parse(item.video_links),
+          video_links: (item.video_links),
           //videoIDURL: JSON.parse(item.videoIDURL),//copy 2nd array as well
       };
   });
 
     return filteredSchedulerData.map(scheduler => (
       <div key={scheduler.scheduler_id} className="scheduler-playlist-item">
-      <h3>{`Slot ${scheduler.scheduler_index} - ${new Date(scheduler.start_date).toDateString()}`}</h3>
+      <h3>{`Slot ${scheduler.slot_index} - ${new Date(scheduler.start_date).toDateString()}`}</h3>
         <ul>
           {scheduler.video_links
             .filter(videoLink => videoLink && Object.values(videoLink)[0]) // Filter out null or empty links

@@ -6,31 +6,32 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const fs = require('fs');
 const multer = require('multer');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 //const path = require('path');
 const app = express();
 const port = 8010;
-const sequelize = require('sequelize');
+const PORT = 8011;
+const seque = require('./config/db');
 const parentVideoURL = 'D:\\qandabackend\\QandA-main\\videos';
-const VideoUploadForm = require('./routes/videoUploadFormAPI');//post req
+const VideoUploadForm = require('./routes/videoTableRoute');//post req
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const videoTable = require('./models/videoTable');
+const videoData = require('./models/videoData');
+const userData = require('./models/userData');
+const userResponse = require('./models/userResponses')
+const schedulerData = require('./models/schedulerData');
+const userResponseRoute = require('./routes/userResponseRoute');
+const schedulerDataRoute = require('./routes/schedulerDataRoute');
+const uploadVideoRoute = require('./routes/uploadVideoRoute');
+const saveSchedulerDataRoute = require('./routes/saveSchedulerDataRoute');
 
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-{/*var pool  = mysql.createPool({
-  connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'root',
-  password        : 'Abc#12345'
-});*/}
-var globalCurrentVideoID = 0;
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({ origin: '*' }));
-
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -48,7 +49,25 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 
+
+
+
 // Routes
+app.use('/api', schedulerDataRoute);
+app.use('/api', userResponseRoute);
+app.use('/api',uploadVideoRoute);
+app.use('/api',saveSchedulerDataRoute);
+seque.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}).catch((error) => {
+  console.error('Unable to sync database: ', error);
+});
+
+
+
+
 
 app.get('/', (req, res) => {
   res.json('Hello All');
@@ -83,6 +102,35 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+//csv
+// List of tables you want to export
+{/*
+const tablesToExport = ['videoTable', 'videoData', 'userData', 'userResponse', 'schedulerData'];
+
+// Export tables to CSV files
+tablesToExport.forEach((tableName) => {
+  const query = `SELECT * FROM ${tableName}`;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error(`Error querying ${tableName}:`, error.message);
+      return;
+    }
+
+    // Define CSV file path for each table
+    const csvWriter = createCsvWriter({
+      path: `${tableName}.csv`,
+      header: Object.keys(results[0]).map((columnName) => ({ id: columnName, title: columnName })),
+    });
+
+    // Write data to CSV file
+    csvWriter.writeRecords(results)
+      .then(() => console.log(`${tableName}.csv has been written successfully.`))
+      .catch((csvError) => console.error(`Error writing ${tableName}.csv:`, csvError));
+  });
+});*/}
+
+// Close the database connection after exporting all tables
 
 app.get('/api/allVideos', (req,res) =>{
   const selectQuery = 'SELECT * FROM videoTable';
@@ -114,42 +162,7 @@ app.get('/api/allVideos', (req,res) =>{
     }
   })
 });
-//for clicker api
-app.get('/api/allVideos/:id', (req,res) =>{
-  const videoId = req.params.id;
-  const selectQuery = 'SELECT * FROM videoTable WHERE videoID='+videoId;
-  connection.query(selectQuery, (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      res.status(500).json({ error: 'Error retrieving all videos' });
-    } else {
-      if (results.length > 0) {
-        {/*const videos = results.map(({ videoID, videoURL, imageURL, dateAndTime, showID, videoType, questionType, qDescription, questionTypeID, options }) => ({
-          videoID,
-          videoURL,
-          imageURL,
-          dateAndTime,
-          showID, 
-          videoType, 
-          questionType, 
-          qDescription, 
-          questionTypeID, 
-          options, 
-         
-        }));*/}
 
-        res.status(200).json({ results });
-      } else {
-        res.status(404).json({ error: 'No videos found' });
-      }
-    }
-  })
-});
-{/*}
-app.post('/api/allVideoDetails/', (req,res) => {
-  const videoID = req.body;
-  globalCurrentVideoID = videoID;
-});*/}
 
 app.get('/api/allVideoDetails/',(req,res) => {
   const selectQuery = 'SELECT displayToggle, userResponseToggle, videoID FROM videoData';
@@ -249,64 +262,6 @@ app.get('/videos/:videoName', (req, res) => {
   }
 });
 
-app.post('/uploadVideo', (req,res) => {
-
-  var selectedVideoID = 0;
-  //const {showID,   questionType, questionTypeID,   options  } = req.body;
-  const {dateAndTime, questionTypeID, videoURL, adStartTime, duration, brandID, videoType, questionDesc, optionOne, optionTwo, optionThree, optionFour, optionFive,  imageURL, correctOption} = req.body;
-  const videoPATH = `/videos/${videoURL}`;
-  const imagePATH = `${__dirname}/images/${imageURL}`;
- 
-  
-  const insertQueryOne = `INSERT INTO videoTable ( videoID, dateAndTime, videoURL, adStartTime, duration, brandID, videoType) VALUES (?,?,?,?,?,?,?)`;
-  const values = [null, dateAndTime, videoPATH, adStartTime, duration, brandID, videoType ];
-
-  connection.query(insertQueryOne, values, (error, results) => {
-    if (error) {
-      console.error('Error executing MySQL query:', error);
-      return res.status(500).json({ error: 'Error inserting data into MySQL' });
-    }
-    else{
-      console.log("Data saved in videoTable");
-   }
-
-  });
-
-  //find the latest videoID
-  const selectQuery = 'SELECT videoID FROM videoTable WHERE videoID = (SELECT MAX(videoID) FROM videoTable)';
-  connection.query(selectQuery, values, (error, results) => {
-    if (error) {
-          console.error('Error executing MySQL query:', error);
-          return res.status(500).json({ error: 'Error adding data plese try again' });
-    }
-    else{
-          if (results.length > 0) {
-            selectedVideoID = results[0].videoID;
-        }
-        //if videoID exists
-        if(selectedVideoID>0)
-        {
-            console.log('Data inserted successfully into videoTable');
-
-            const insertQueryTwo = `INSERT INTO videoData ( videoDataID, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            const values = [null, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, 0, imageURL, correctOption, selectedVideoID];
-
-            connection.query(insertQueryTwo, values, (error, results) => {
-                  if (error) {
-                    console.error('Error executing MySQL query:', error);
-                    return res.status(500).json({ error: 'Error inserting data into videoData' });
-                  }
-
-                    return res.status(200).json('Data inserted successfully into videoTable and videoData' );
-          });
-
-        }
-    
-      }
-
-  });
-
-});
 
 app.post('/api/userResponseData', (req, res) => {
   const { userName, phoneNumber, cardID, questionTypeID, optionSelected, videoDataID } = req.body;
@@ -402,7 +357,7 @@ app.post('/api/userResponseData', (req, res) => {
 
 
 
-{/*}
+
 //POST to receive user response from clicker
 app.post('/api/userResponseData', (req,res) =>{
   const {userName, phoneNumber, cardID, questionTypeID, optionSelected, videoDataID} = req.body;
@@ -459,27 +414,7 @@ app.post('/api/userResponseData', (req,res) =>{
       }
     }
 });
-}); */}
-
-//get all the user responses for all the users
-app.get('/api/getUserResponse', (req,res) => {
-
-  //const query = 'SELECT * FROM userResponse INNER JOIN userData ON userResponse.userID = userData.userID';
-  const query = 'SELECT userResponse.*, userData.*, videoData.correctOption, videoData.questionDesc FROM userResponse '+
-  'INNER JOIN userData ON userResponse.userID = userData.userID '+
-  'INNER JOIN videoData ON userResponse.questionTypeID = videoData.questionTypeID '+
-  'WHERE userResponse.questionTypeID = videoData.questionTypeID'
-  ;
-  connection.query(query,  (error, result) => {
-    if (error) {
-          console.error('Error executing selectQueryTwo query:', error);
-          return res.status(500).json({ error: 'Error adding data plese try again' });
-    }
-    else {
-      return res.status(200).json({result});
-    }
-})
-})
+}); 
 
 //PUT UPDATE DISPLAY TOGGLE DATA
 app.put('/api/changeDisplayToggle', async (req, res) => {
@@ -522,6 +457,109 @@ app.get('/api/currentlyRunningVideo', (req, res) => {
 });*/}
 
 
+{/*}
+app.listen(port, () => {
+  console.log(`Server is running`);
+});
+*/}
+
+//********************************************************************************************************************************************************** */
+//APIS SHIFTED TO MODELS
+// GET request to retrieve all scheduler data
+{/*app.get('/api/allSchedulerData', (req, res) => {
+  connection.query('SELECT * FROM schedulerData', (err, results) => {
+    if (err) {
+      console.error('Error fetching scheduler data:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      console.log('Scheduler data fetched successfully');
+      res.status(200).json(results);
+    }
+  });
+});
+{/*}/
+//get all the user responses for all the users
+app.get('/api/getUserResponse', (req,res) => {
+
+  //const query = 'SELECT * FROM userResponse INNER JOIN userData ON userResponse.userID = userData.userID';
+  const query = 'SELECT userResponse.*, userData.*, videoData.correctOption, videoData.questionDesc FROM userResponse '+
+  'INNER JOIN userData ON userResponse.userID = userData.userID '+
+  'INNER JOIN videoData ON userResponse.questionTypeID = videoData.questionTypeID '+
+  'WHERE userResponse.questionTypeID = videoData.questionTypeID'
+  ;
+  connection.query(query,  (error, result) => {
+    if (error) {
+          console.error('Error executing selectQueryTwo query:', error);
+          return res.status(500).json({ error: 'Error adding data plese try again' });
+    }
+    else {
+      return res.status(200).json({result});
+    }
+})
+})
+
+
+app.post('/uploadVideo', (req,res) => {
+
+  var selectedVideoID = 0;
+  //const {showID,   questionType, questionTypeID,   options  } = req.body;
+  const {dateAndTime, questionTypeID, videoURL, adStartTime, duration, brandID, videoType, questionDesc, optionOne, optionTwo, optionThree, optionFour, optionFive,  imageURL, correctOption, padX, padY, text, x, y, colours} = req.body;
+  const videoPATH = `/videos/${videoURL}`;
+  const imagePATH = `${__dirname}/images/${imageURL}`;
+ 
+  
+  const insertQueryOne = `INSERT INTO videoTable ( videoID, dateAndTime, videoURL, adStartTime, duration, brandID, videoType) VALUES (?,?,?,?,?,?,?)`;
+  const values = [null, dateAndTime, videoPATH, adStartTime, duration, brandID, videoType ];
+
+  connection.query(insertQueryOne, values, (error, results) => {
+    if (error) {
+      console.error('Error executing MySQL query:', error);
+      return res.status(500).json({ error: 'Error inserting data into MySQL' });
+    }
+    else{
+      console.log("Data saved in videoTable");
+   }
+
+  });
+
+  //find the latest videoID
+  const selectQuery = 'SELECT videoID FROM videoTable WHERE videoID = (SELECT MAX(videoID) FROM videoTable)';
+  connection.query(selectQuery, values, (error, results) => {
+    if (error) {
+          console.error('Error executing MySQL query:', error);
+          return res.status(500).json({ error: 'Error adding data plese try again' });
+    }
+    else{
+          if (results.length > 0) {
+            selectedVideoID = results[0].videoID;
+        }
+        //if videoID exists
+        if(selectedVideoID>0)
+        {
+            console.log('Data inserted successfully into videoTable');
+
+            const insertQueryTwo = `INSERT INTO videoData ( videoDataID, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+            const values = [null, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, 0, imageURL, correctOption, selectedVideoID];
+
+            connection.query(insertQueryTwo, values, (error, results) => {
+                  if (error) {
+                    console.error('Error executing MySQL query:', error);
+                    return res.status(500).json({ error: 'Error inserting data into videoData' });
+                  }
+
+                    return res.status(200).json('Data inserted successfully into videoTable and videoData' );
+          });
+
+        }
+    
+      }
+
+  });
+
+});
+
+
+
 // POST endpoint to save scheduler data
 app.post('/api/saveSchedulerData', (req, res) => {
   const schedulerData = req.body;
@@ -539,22 +577,11 @@ app.post('/api/saveSchedulerData', (req, res) => {
   });
 });
 
-// GET request to retrieve all scheduler data
-app.get('/api/allSchedulerData', (req, res) => {
-  connection.query('SELECT * FROM schedulerData', (err, results) => {
-    if (err) {
-      console.error('Error fetching scheduler data:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      console.log('Scheduler data fetched successfully');
-      res.status(200).json(results);
-    }
-  });
-});
-  
-app.listen(port, () => {
-  console.log(`Server is running`);
-});
+
+
+*/}
+
+
 
 
 
