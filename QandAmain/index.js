@@ -24,7 +24,10 @@ const userResponseRoute = require('./routes/userResponseRoute');
 const schedulerDataRoute = require('./routes/schedulerDataRoute');
 const uploadVideoRoute = require('./routes/uploadVideoRoute');
 const saveSchedulerDataRoute = require('./routes/saveSchedulerDataRoute');
-
+const changeDisplayToggleRoute = require('./routes/changeDisplayToggleRoute');
+const postUserResponseRoute = require('./routes/postUserResponseRouter');
+const allVideoDetailsRoute = require('./routes/allVideoDetailsRoute');
+const videoTableRouter = require('./routes/videoTableRoute');
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -53,10 +56,14 @@ firebase.initializeApp(firebaseConfig);
 
 
 // Routes
-app.use('/api', schedulerDataRoute);
+app.use('/api', schedulerDataRoute);//5
 app.use('/api', userResponseRoute);
-app.use('/api',uploadVideoRoute);
-app.use('/api',saveSchedulerDataRoute);
+app.use('/api',uploadVideoRoute);//1
+app.use('/api',saveSchedulerDataRoute);//4
+app.use('/api',changeDisplayToggleRoute);
+app.use('/api',postUserResponseRoute);
+app.use('/api',allVideoDetailsRoute);//2
+app.use('/api',videoTableRouter);//3
 seque.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
@@ -69,38 +76,38 @@ seque.sync().then(() => {
 
 
 
-app.get('/', (req, res) => {
-  res.json('Hello All');
-});
+// app.get('/', (req, res) => {
+//   res.json('Hello All');
+// });
 
-// Set up MySQL connection start of code
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Abc#12345',
-  database: 'MEDIAPLAYER',
-});
+// // Set up MySQL connection start of code
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'Abc#12345',
+//   database: 'streeSocialDB',
+// });
 
-connection.connect((err) => {
-  if (err) {
-      console.error('Error connecting to MySQL: ' + err.stack);
-      return;
-  }
-  console.log('Connected to MySQL as id ' + connection.threadId);
-});
+// connection.connect((err) => {
+//   if (err) {
+//       console.error('Error connecting to MySQL: ' + err.stack);
+//       return;
+//   }
+//   console.log('Connected to MySQL as id ' + connection.threadId);
+// });
 
 
-// Configure Multer for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // The destination directory for uploaded files
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Use the current timestamp as the file name
-  },  
-});
+// // Configure Multer for file upload
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/'); // The destination directory for uploaded files
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname); // Use the current timestamp as the file name
+//   },  
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 //csv
 // List of tables you want to export
@@ -132,59 +139,28 @@ tablesToExport.forEach((tableName) => {
 
 // Close the database connection after exporting all tables
 
-app.get('/api/allVideos', (req,res) =>{
-  const selectQuery = 'SELECT * FROM videoTable';
-  connection.query(selectQuery, (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      res.status(500).json({ error: 'Error retrieving all videos' });
-    } else {
-      if (results.length > 0) {
-        {/*const videos = results.map(({ videoID, videoURL, imageURL, dateAndTime, showID, videoType, questionType, qDescription, questionTypeID, options}) => ({
-          videoID,
-          videoURL,
-          imageURL,
-          dateAndTime,
-          showID, 
-          videoType, 
-          questionType, 
-          qDescription, 
-          questionTypeID, 
-          options, 
-      
-        }));
 
-      */}
-        res.status(200).json({ results });
-      } else {
-        res.status(404).json({ error: 'No videos found' });
-      }
-    }
-  })
-});
+// app.get('/api/allVideoDetails/',(req,res) => {
+//   const selectQuery = 'SELECT displayToggle, userResponseToggle, videoID FROM videoData';
 
-
-app.get('/api/allVideoDetails/',(req,res) => {
-  const selectQuery = 'SELECT displayToggle, userResponseToggle, videoID FROM videoData';
-
-  connection.query(selectQuery, (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      res.status(500).json({ error: 'Error retrieving all videos' });
-    } else {
-      if (results.length > 0) {
-        const videos = results.map(({displayToggle, userResponseToggle, videoID }) => {
-          displayToggle,
-          userResponseToggle,
-          videoID
-        });
-        res.status(200).json({ results });
-      } else {
-        res.status(404).json({ error: 'No videos found' });
-      }
-    }
-  })
-});
+//   connection.query(selectQuery, (err, results) => {
+//     if (err) {
+//       console.error('Error querying database:', err);
+//       res.status(500).json({ error: 'Error retrieving all videos' });
+//     } else {
+//       if (results.length > 0) {
+//         const videos = results.map(({displayToggle, userResponseToggle, videoID }) => {
+//           displayToggle,
+//           userResponseToggle,
+//           videoID
+//         });
+//         res.status(200).json({ results });
+//       } else {
+//         res.status(404).json({ error: 'No videos found' });
+//       }
+//     }
+//   })
+// });
 
 
 // Express route to retrieve video by ID
@@ -263,178 +239,6 @@ app.get('/videos/:videoName', (req, res) => {
 });
 
 
-app.post('/api/userResponseData', (req, res) => {
-  const { userName, phoneNumber, cardID, questionTypeID, optionSelected, videoDataID } = req.body;
-  let finalUserID = 0;
-
-  // Begin a transaction
-  connection.beginTransaction(function (err) {
-    if (err) {
-      console.error('Error beginning transaction:', err);
-      return res.status(500).json({ error: 'Error adding data, please try again' });
-    }
-
-    // First query to insert user details
-    const insertQuery = 'INSERT INTO userData (userID, userName, cardID, phoneNumber, dateAndTime) VALUES (?,?,?,?,NOW())';
-    const insertValues = [null, userName, cardID, phoneNumber];
-
-    connection.query(insertQuery, insertValues, (error, insertResults) => {
-      if (error) {
-        console.error('Error inserting user details:', error);
-        // Rollback the transaction
-        connection.rollback(function () {
-          console.error('Transaction rolled back.');
-          return res.status(500).json({ error: 'Error adding data, please try again' });
-        });
-      } else {
-        // Second query to select userID
-       // const selectQuery = 'SELECT userID FROM userData WHERE userName = ? AND phoneNumber = ? AND cardID = ?';
-       const selectQuery = 'SELECT userID FROM userData WHERE userName = ? AND phoneNumber = ? AND cardID = ?  ORDER BY dateAndTime DESC LIMIT 1';
-        const selectValues = [userName, phoneNumber, cardID];
-
-        connection.query(selectQuery, selectValues, (error, selectResults) => {
-          if (error) {
-            console.error('Error selecting userID:', error);
-            // Rollback the transaction
-            connection.rollback(function () {
-              console.error('Transaction rolled back.');
-              return res.status(500).json({ error: 'Error adding data, please try again' });
-            });
-          } else {
-            if (selectResults.length > 0) {
-              finalUserID = selectResults[0].userID;
-
-              // Commit the transaction
-              connection.commit(function (err) {
-                if (err) {
-                  console.error('Error committing transaction:', err);
-                  // Rollback the transaction
-                  connection.rollback(function () {
-                    console.error('Transaction rolled back.');
-                    return res.status(500).json({ error: 'Error adding data, please try again' });
-                  });
-                } else {
-                  // Third query to insert user response
-                  const insertResponseQuery ='INSERT INTO userResponse (userResponseID, userID, optionSelected, videoDataID, questionTypeID) VALUES (?,?,?,?,?)';
-                  const insertResponseValues = [null, finalUserID, optionSelected, videoDataID,  questionTypeID];
-
-                 {/* const insertResponseQuery = 'INSERT INTO userResponse (userResponseID, userID, optionNumber, optionSelected,  isCorrect, videoDataID, questionTypeID)'+
-                  ' VALUES (?, ?, ?, ?, CASE WHEN (SELECT correctOption FROM videoData WHERE videoDataID = ?) = ? THEN 1'+
-                  ' WHEN (SELECT correctOption FROM videoData WHERE videoDataID = ?) = "NIL" THEN 2'+
-                ' ELSE 0 END,?)';*/}
-                  
-                  //const insertResponseValues =  [null, finalUserID, null, optionSelected, videoDataID, optionSelected, videoDataID, questionTypeID];
-
-
-                  connection.query(insertResponseQuery, insertResponseValues, (error, insertResponseResults) => {
-                    if (error) {
-                      console.error('Error inserting user response:', error);
-                      // Rollback the transaction
-                      connection.rollback(function () {
-                        console.error('Transaction rolled back.');
-                        return res.status(500).json({ error: 'Error adding data, please try again' });
-                      });
-                    } else {
-                      // All queries executed successfully, commit the transaction
-                      return res.status(200).send('RESPONSE 200 OK');
-                    }
-                  });
-                }
-              });
-            } else {
-              // No userID found, rollback the transaction
-              connection.rollback(function () {
-                console.error('Transaction rolled back.');
-                return res.status(500).json({ error: 'Error adding data, please try again' });
-              });
-            }
-          }
-        });
-      }
-    });
-  });
-});
-
-
-
-
-//POST to receive user response from clicker
-app.post('/api/userResponseData', (req,res) =>{
-  const {userName, phoneNumber, cardID, questionTypeID, optionSelected, videoDataID} = req.body;
-  var userid = 0;
-  const selectQuery = 'SELECT userID FROM userData WHERE userName = ? AND phoneNumber = ? AND cardID=?';
-  const values = [userName, phoneNumber, cardID ];
-  connection.query(selectQuery, values, (error, results) => {
-    if (error) {
-          console.error('Error executing MySQL query:', error);
-          return res.status(500).json({ error: 'Error adding data plese try again' });
-    }
-    else{
-      if(results[0].userID>0)
-      {
-        userid = results[0].userID;
-        var questionTypeid = 0;
-        var questionDescription = '';
-        var correctOptionGiven = '';
-        var isCorrect = false;
-        const selectQueryTwo = 'SELECT questionTypeID, questionDesc, correctOption from videoData where videoDataID='+videoDataID+'AND questionTypeID='+questionTypeID;
-        connection.query(selectQuery, values, (error, result) => {
-              if (error) {
-                    console.error('Error executing selectQueryTwo query:', error);
-                    return res.status(500).json({ error: 'Error adding data plese try again' });
-              }
-              else{
-                      if(result.length>0)//else result is null
-                      {
-                                questionTypeid = result[0].questionTypeID;
-                                questionDescription = result[0].questionDesc;
-                                correctOptionGiven = result[0].correctOption;
-
-
-                                if(correctOptionGiven === optionSelected)
-                                {
-                                      isCorrect = true;
-                                }
-                                const insertOneQuery = 'INSERT INTO userResponse (userResponseID, userID, questionTypeID, optionSelected, videoDataID, isCorrect) VALUES (?,?,?,?,?,?)';
-                                const value = [null, userid, questionTypeid, optionSelected, videoDataID, isCorrect];
-                                connection.query(insertOneQuery, value, (error, result) => {
-                                  if (error) {
-                                        console.error('Error executing selectQueryTwo query:', error);
-                                        return res.status(500).json({ error: 'Error adding data plese try again' });
-                                  }
-                                  return res.status(200).json('Data inserted successfully into userResponse table' );
-
-                                });
-                      }
-                      else{
-                        return res.status(200).json('Data received from the database is null, video selected does not exist');
-                      }
-              }
-        });
-      }
-    }
-});
-}); 
-
-//PUT UPDATE DISPLAY TOGGLE DATA
-app.put('/api/changeDisplayToggle', async (req, res) => {
-  const { displayToggle, videoID, userResponseToggle } = req.body;
-  console.log("displaytoggle",displayToggle)
- 
-    const query = 'UPDATE videoData SET displayToggle = CASE WHEN videoID = ? THEN ? ELSE displayToggle END, userResponseToggle = ?';
-   const values = [videoID, displayToggle, userResponseToggle];
-    // Execute the update query
-    connection.query(query, values, (error, result) => {
-      if (error) {
-            console.error('Error executing selectQueryTwo query:', error);
-            return res.status(500).json({ error: 'Error adding data plese try again' });
-      }else {
-        console.log(values)
-        console.log("update successful",result)
-      res.status(200).json({ message: 'Record found' });
-    }
-  }); 
-});
 {/*}
 // GET request to retrieve currently running video data
 app.get('/api/currentlyRunningVideo', (req, res) => {
@@ -574,6 +378,117 @@ app.post('/api/saveSchedulerData', (req, res) => {
       console.log('Data saved to MySQL:', result);
       res.status(200).json({ success: true });
     }
+  });
+});
+
+//PUT UPDATE DISPLAY TOGGLE DATA
+app.put('/api/changeDisplayToggle', async (req, res) => {
+  const { displayToggle, videoID, userResponseToggle } = req.body;
+  console.log("displaytoggle",displayToggle)
+ 
+    const query = 'UPDATE videoData SET displayToggle = CASE WHEN videoID = ? THEN ? ELSE displayToggle END, userResponseToggle = ?';
+   const values = [videoID, displayToggle, userResponseToggle];
+    // Execute the update query
+    connection.query(query, values, (error, result) => {
+      if (error) {
+            console.error('Error executing selectQueryTwo query:', error);
+            return res.status(500).json({ error: 'Error adding data plese try again' });
+      }else {
+        console.log(values)
+        console.log("update successful",result)
+      res.status(200).json({ message: 'Record found' });
+    }
+  }); 
+});
+
+
+
+
+app.post('/api/userResponseData', (req, res) => {
+  const { userName, phoneNumber, cardID, questionTypeID, optionSelected, videoDataID } = req.body;
+  let finalUserID = 0;
+
+  // Begin a transaction
+  connection.beginTransaction(function (err) {
+    if (err) {
+      console.error('Error beginning transaction:', err);
+      return res.status(500).json({ error: 'Error adding data, please try again' });
+    }
+
+    // First query to insert user details
+    const insertQuery = 'INSERT INTO userData (userID, userName, cardID, phoneNumber, dateAndTime) VALUES (?,?,?,?,NOW())';
+    const insertValues = [null, userName, cardID, phoneNumber];
+
+    connection.query(insertQuery, insertValues, (error, insertResults) => {
+      if (error) {
+        console.error('Error inserting user details:', error);
+        // Rollback the transaction
+        connection.rollback(function () {
+          console.error('Transaction rolled back.');
+          return res.status(500).json({ error: 'Error adding data, please try again' });
+        });
+      } else {
+        // Second query to select userID
+       // const selectQuery = 'SELECT userID FROM userData WHERE userName = ? AND phoneNumber = ? AND cardID = ?';
+       const selectQuery = 'SELECT userID FROM userData WHERE userName = ? AND phoneNumber = ? AND cardID = ?  ORDER BY dateAndTime DESC LIMIT 1';
+        const selectValues = [userName, phoneNumber, cardID];
+
+        connection.query(selectQuery, selectValues, (error, selectResults) => {
+          if (error) {
+            console.error('Error selecting userID:', error);
+            // Rollback the transaction
+            connection.rollback(function () {
+              console.error('Transaction rolled back.');
+              return res.status(500).json({ error: 'Error adding data, please try again' });
+            });
+          } else {
+            if (selectResults.length > 0) {
+              finalUserID = selectResults[0].userID;
+
+              // Commit the transaction
+              connection.commit(function (err) {
+                if (err) {
+                  console.error('Error committing transaction:', err);
+                  // Rollback the transaction
+                  connection.rollback(function () {
+                    console.error('Transaction rolled back.');
+                    return res.status(500).json({ error: 'Error adding data, please try again' });
+                  });
+                } else {
+                  // Third query to insert user response
+                  const insertResponseQuery ='INSERT INTO userResponse (userResponseID, userID, optionSelected, videoDataID, questionTypeID) VALUES (?,?,?,?,?)';
+                  const insertResponseValues = [null, finalUserID, optionSelected, videoDataID,  questionTypeID];
+
+                  
+                  //const insertResponseValues =  [null, finalUserID, null, optionSelected, videoDataID, optionSelected, videoDataID, questionTypeID];
+
+
+                  connection.query(insertResponseQuery, insertResponseValues, (error, insertResponseResults) => {
+                    if (error) {
+                      console.error('Error inserting user response:', error);
+                      // Rollback the transaction
+                      connection.rollback(function () {
+                        console.error('Transaction rolled back.');
+                        return res.status(500).json({ error: 'Error adding data, please try again' });
+                      });
+                    } else {
+                      // All queries executed successfully, commit the transaction
+                      return res.status(200).send('RESPONSE 200 OK');
+                    }
+               {/}   });
+                }
+              });
+            } else {
+              // No userID found, rollback the transaction
+              connection.rollback(function () {
+                console.error('Transaction rolled back.');
+                return res.status(500).json({ error: 'Error adding data, please try again' });
+              });
+            }
+          }
+        });
+      }
+    });
   });
 });
 
