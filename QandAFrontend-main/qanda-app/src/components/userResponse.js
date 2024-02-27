@@ -11,7 +11,7 @@ export const UserResponse = () => {
       const response =  await fetch("http://localhost:8010/api/getUserResponse");
       const data =   await response.json();
       console.log("result", (data));
-      return
+
       setUserResponse(data.result);
     } catch (error) {
        console.error("Error fetching user response:", error);
@@ -32,9 +32,11 @@ export const UserResponse = () => {
 
   const filteredUserResponse = userResponse.filter(
     (response) =>
-      response.cardID.includes(filteredCardID) &&
-      response.phoneNumber.includes(filteredPhoneNumber)
+      response.cardID.toString().includes(filteredCardID) &&
+      response.phoneNumber.toString().includes(filteredPhoneNumber)
   );
+
+  console.log("filteredUserResponse",filteredUserResponse)
    
   return (
  
@@ -79,7 +81,7 @@ export const UserResponse = () => {
                 className="user-response-details"
               >
                 <td>{userResponse.createdAt}</td>
-                {/* <td>{index + 1}</td>
+                <td>{index + 1}</td>
                 <td>{userResponse.dateAndTime!=null?(new Date(userResponse.dateAndTime)).toLocaleString():''}</td>
                 <td>{userResponse.userName}</td>
                 <td>{userResponse.userID}</td>
@@ -95,7 +97,7 @@ export const UserResponse = () => {
                       : userResponse.correctOption === 'NIL'
                       ? 'N/A'
                       : 'Wrong Answer'}{' '}
-                    </td> */}
+                    </td> 
               </tr>
             ))}
           </tbody>

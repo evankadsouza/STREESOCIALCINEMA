@@ -18,6 +18,7 @@ const userResponse = seque.define('userResponse', {
       },
     videoDataID:{
         type: DataTypes.INTEGER,
+        allowNull: false,
     },
     questionTypeID:{
         type: DataTypes.INTEGER,
@@ -25,8 +26,10 @@ const userResponse = seque.define('userResponse', {
     });
 
     userResponse.belongsTo(userData, { foreignKey: 'userID' });
-    userResponse.belongsTo(videoData, { foreignKey: 'videoDataID' });
-    userResponse.belongsTo(videoData, { foreignKey: 'questionTypeID' });
+    userResponse.belongsTo(videoData, { foreignKey: 'videoDataID', onUpdate: 'NO ACTION', onDelete: 'CASCADE' });
+
+   // userResponse.belongsTo(videoData, { foreignKey: 'questionTypeID', onUpdate: 'NO ACTION', onDelete: 'CASCADE' });
+
 
 
 

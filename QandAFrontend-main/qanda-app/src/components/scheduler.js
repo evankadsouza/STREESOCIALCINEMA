@@ -27,7 +27,7 @@ const Scheduler = () => {
     fetch('http://192.168.0.113:8010/api/allVideos')
       .then(response => response.json())
       .then(data => {
-        setVideos(data.results);
+        setVideos(data);
       })
       .catch(error => {
         console.error('Error fetching videos:', error);

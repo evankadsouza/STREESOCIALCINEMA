@@ -35,7 +35,7 @@ saveSchedulerDataController.saveSchedulerData = async (req,res) =>
 
     console.log(schedulerData);
 
-    const query = `INSERT INTO schedulerData SET theatre_id = '${schedulerData.theatre_id}', start_date = '${schedulerData.start_date}', slot_index = ${schedulerData.slot_index}, video_links='${schedulerData.video_links}'`;
+    const query = `INSERT INTO schedulerData SET theatre_id = '${schedulerData.theatre_id}', start_date = '${schedulerData.start_date}', slot_index = ${schedulerData.slot_index}, video_links='${schedulerData.video_links}', createdAt = NOW(), updatedAt = NOW()`;
 
     const results = await connection.query(query);
 

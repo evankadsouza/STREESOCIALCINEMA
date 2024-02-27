@@ -172,8 +172,8 @@ export const VideoPlayer = () => {
   fetch('http://192.168.0.113:8010/api/allVideos')
   .then(response => response.json())
   .then(data => {
-    console.log(data.results)
-    const matchingVideo = data.results.find(video => video.videoURL == videoLinks[currentIndex]);
+    console.log(data)
+    const matchingVideo = data.find(video => video.videoURL == videoLinks[currentIndex]);
     if (matchingVideo) {
       setVideoID(matchingVideo.videoID);
       setAdStartSeconds(matchingVideo.adStartTime)
@@ -204,16 +204,17 @@ export const VideoPlayer = () => {
 
   
   const handleTimeUpdate = () => {
-
+    console.log("handleTimeUpdate")
      // Check if the current time is greater than or equal to a certain value
      if (videoRef.current.currentTime > 0 && videoRef.current.currentTime<adStartSeconds) {
-      //setIsCertainTimeReached(true);
+      console.log("no",adStartSeconds)
       setDisplayToggle("0");
       setUserResponseToggle("1");
       handleChangeDisplayToggle(displayToggle, videoID, userResponseToggle);
     }
      if (videoRef.current.currentTime >= adStartSeconds && videoRef.current.currentTime<duration-2) {
       //setIsCertainTimeReached(true);
+      console.log("yes",adStartSeconds,duration)
       setDisplayToggle("1");
       setUserResponseToggle("0");
       handleChangeDisplayToggle(displayToggle, videoID, userResponseToggle);
@@ -228,7 +229,7 @@ export const VideoPlayer = () => {
 
   const handleChangeDisplayToggle = async (displayToggle, currentVideoID, userResponseToggle) => {
     const fetchData = async () => {
-      const url = 'http://localhost:8010/api/changeDisplayToggle'; // Replace with your API endpoint
+      const url = 'http://192.168.0.113:8010/api/changeDisplayToggle'; // Replace with your API endpoint
       const data = {
         // Your data to be sent in the request body
         displayToggle: displayToggle,
@@ -236,6 +237,7 @@ export const VideoPlayer = () => {
         userResponseToggle: userResponseToggle,
       };
       try {
+        console.log("reached put request try block",adStartSeconds)
         const response = await axios.put(url, data, {
           headers: {
             'Content-Type': 'application/json',

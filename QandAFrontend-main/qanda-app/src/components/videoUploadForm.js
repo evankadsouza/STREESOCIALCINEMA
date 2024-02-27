@@ -51,6 +51,7 @@ function UploadForm() {
     4: "WHICH FEMALE ACTOR WAS IN THE AD?",
   };
 
+  
   const optionMapping = {
     2: [
       {"padx1":177,"padx2":192}, 
@@ -64,8 +65,8 @@ function UploadForm() {
   3: [
     {"padx1":177,"padx2":192}, 
     {"pady1":60,"pady2":54}, 
-    {text: "font_style_45"}, 
     {"x1":0,"x2":0},
+    {text: "font_style_45"}, 
     {"y1":424,"y2":617},
     {color:"red"}
   ],    
@@ -98,7 +99,6 @@ function UploadForm() {
 ],
 };
 
-
   const handleQuestionTypeIDChange = (e) => {
     const selectedQuestionTypeID = e.target.value;
     setFormData({
@@ -108,19 +108,18 @@ function UploadForm() {
     });
   };
 
-  
   const handleoption = (e) => {
     const optionid = e.target.value;
     setFormData({
       ...formData,
       option: optionid,
       // optionsdesc: optionMapping[optionid] || "",
-      padX: optionMapping[optionid][0] || "",
-      padY: optionMapping[optionid][1] || "",
-      text: optionMapping[optionid][2] || "",
-      x: optionMapping[optionid][3] || "",
-      y: optionMapping[optionid][4] || "",
-      colours: optionMapping[optionid][5] || "",
+      padX: JSON.stringify(optionMapping[optionid][0]) || "",
+      padY: JSON.stringify(optionMapping[optionid][1])|| "",
+      text: JSON.stringify(optionMapping[optionid][2]) || "",
+      x: JSON.stringify(optionMapping[optionid][3])|| "",
+      y: JSON.stringify(optionMapping[optionid][4]) || "",
+      colours: JSON.stringify(optionMapping[optionid][5]) || "",
     });
   };
 
@@ -185,12 +184,8 @@ function UploadForm() {
         },
         body: JSON.stringify(formData),
       });
-      //console.log("response.body",response.body)
       if (response.ok) {
         alert('Data saved successfully!');
-        console.log('Data uploaded successfully');
-        console.log(formData);
-        // Add any additional logic or state updates as needed
       } else {
         console.error('Error uploading data');
         alert('Error uploading data!');
@@ -418,10 +413,8 @@ function UploadForm() {
       <br/>
       <button type="submit" onClick={() =>{
         buttonClick = true
-
       }}>Upload Video</button>
       <br/>
-      
     </form>
     
   );

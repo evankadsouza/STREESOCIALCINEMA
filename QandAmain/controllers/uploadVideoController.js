@@ -80,9 +80,9 @@ uploadVideoController.uploadVideo = async (req, res) => {
     console.log(dateAndTime);
 
     const videoPATH = `/videos/${videoURL}`;
-    const insertQueryOne = `INSERT INTO videoTables(videoID, dateAndTime, videoURL, adStartTime, duration, videoType) VALUES (null, '${dateAndTime}', '${videoPATH}', ${adStartTime}, ${duration}, '${videoType}')`;
+    const insertQueryOne = `INSERT INTO videoTables(videoID, dateAndTime, videoURL, adStartTime, duration, videoType,createdAt,updatedAt) VALUES (null, '${dateAndTime}', '${videoPATH}', ${adStartTime}, ${duration}, '${videoType}',NOW(),NOW())`;
 
-    console.log('Final SQL Query:', insertQueryOne);
+    console.log('Final values ob:', padX, padY);
 
    const results =  await connection.query(insertQueryOne);
 
@@ -95,7 +95,7 @@ uploadVideoController.uploadVideo = async (req, res) => {
       if (resultsSelect.length > 0) {
         const selectedVideoID = resultsSelect[0].videoID;
 
-        const insertQueryTwo = `INSERT INTO videoData (videoDataID, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, text, x, y, colours) VALUES (null,'${dateAndTime}','${questionDesc}',${questionTypeID},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}')`;
+        const insertQueryTwo = `INSERT INTO videoData (videoDataID, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, text, x, y, colours,createdAt,updatedAt) VALUES (null,'${dateAndTime}','${questionDesc}',${questionTypeID},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}',NOW(),NOW())`;
 
         console.log('Final SQL Query:', insertQueryTwo);
 
