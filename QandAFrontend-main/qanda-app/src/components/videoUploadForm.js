@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/videoUploadForm.css';
-
 
 function UploadForm() {
   const [formData, setFormData] = useState({
@@ -9,13 +7,11 @@ function UploadForm() {
     videoURL: '',
     imageURL: '',
     dateAndTime:'',
-    // brandName:'',
     questionType: '',
     videoType:'',
     questionDesc:'',
     questionTypeID: '',
     option: '',
-    // optionsdesc:'',
     padX:'',
     padY:'',
     text:'',
@@ -29,7 +25,11 @@ function UploadForm() {
     optionFour:'',
     optionFive:'',
     adStartTime:'',
-    correctOption:''
+    correctOption:'',
+    brandName:'',
+    brandLogo:'',
+    contactPersonName:'',
+    contactPersonNumber:''
   });
 
   const [showAlert, setShowAlert] = useState(false);
@@ -46,6 +46,7 @@ function UploadForm() {
     4: "WHICH FEMALE ACTOR WAS IN THE AD?",
   };
 
+  
   const optionMapping = {
     2: [
       {"padx1":177,"padx2":192}, 
@@ -165,6 +166,11 @@ function UploadForm() {
     setFormData({ ...formData, 'imageURL' :  myArray[2]});
   }
 
+  const handleBrandLogoChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, brandLogo: file });
+  };  
+
   const handleSubmit = async (e) => {
     console.log('hello')
     e.preventDefault();
@@ -203,8 +209,26 @@ function UploadForm() {
         Image URL:
         <input type="file" onChange={handleImageChange} />
       </label>
-      <br />
+      <br/>
       <br/>     
+      <label>
+       Brand Logo:
+      <input type="file" accept="image/*" onChange={handleBrandLogoChange} />
+      </label>
+      <br/>
+      <br/>  
+      <label>
+      Contact Person Name:
+     <input type="text" name="contactPersonName" value={formData.contactPersonName} onChange={handleChange} />
+     </label>
+     <br />
+     <br/>
+     <label>
+      Contact Person Number:
+     <input type="text" name="contactPersonNumber" value={formData.contactPersonNumber} onChange={handleChange} />
+     </label>
+    <br/>
+    <br/>
       <label>
         Date:
         <input type="datetime-local" name="dateAndTime" value={formData.dateAndTime} onChange={handleChange} />
@@ -410,7 +434,9 @@ function UploadForm() {
       }}>Upload Video</button>
       <br/>
     </form>
+    
   );
 }
+
 
 export default UploadForm;
