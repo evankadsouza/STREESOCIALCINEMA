@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
+import Alert from 'react-popup-alert';
+import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import TimePicker from 'react-time-picker';
 import '../styles/videoUploadForm.css';
+
+
 
 
 function UploadForm() {
@@ -29,7 +34,11 @@ function UploadForm() {
     optionFour:'',
     optionFive:'',
     adStartTime:'',
-    correctOption:''
+    correctOption:'',
+    brandName:'',
+    brandLogo:'',
+    contactPersonName:'',
+    contactPersonNumber:''
   });
 
   const [showAlert, setShowAlert] = useState(false);
@@ -46,6 +55,7 @@ function UploadForm() {
     4: "WHICH FEMALE ACTOR WAS IN THE AD?",
   };
 
+  
   const optionMapping = {
     2: [
       {"padx1":177,"padx2":192}, 
@@ -214,6 +224,24 @@ function UploadForm() {
       <label>
         Brand Name:
         <input type="text" name="brandName" value={formData.brandName} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Logo:
+        <input type="text" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Contact Name:
+        <input type="text" name="contactPersonName" value={formData.contactPersonName} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Contact Phone:
+        <input type="text" name="contactPersonNumber" value={formData.contactPersonNumber} onChange={handleChange} />
       </label>
       <br />
       <br/>      
@@ -410,7 +438,9 @@ function UploadForm() {
       }}>Upload Video</button>
       <br/>
     </form>
+    
   );
 }
+
 
 export default UploadForm;
