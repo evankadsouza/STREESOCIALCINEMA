@@ -3,6 +3,7 @@ const seque = require('../config/db');
 const userData = require('./userData');
 const videoData = require('./videoData');
 
+
 const userResponse = seque.define('userResponse', {
     userResponseID:{
         type: DataTypes.INTEGER,

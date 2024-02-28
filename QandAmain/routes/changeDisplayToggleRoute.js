@@ -4,4 +4,6 @@ const changeDisplayToggleController = require('../controllers/changeDisplayToggl
 
 changeDisplayToggleRoute.put('/changeDisplayToggle', changeDisplayToggleController.changeDisplayToggle);
 
+
 module.exports=changeDisplayToggleRoute;
+

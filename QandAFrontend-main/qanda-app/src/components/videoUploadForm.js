@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import '../styles/videoUploadForm.css';
+import config from '../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
+
+
 
 function UploadForm() {
   const [formData, setFormData] = useState({
@@ -177,7 +181,7 @@ function UploadForm() {
       console.log("final form data:",formData);
 
      try {
-      const response = await fetch('http://192.168.0.113:8010/api/uploadVideo', {
+      const response = await fetch(`${apiUrl}/api/uploadVideo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -238,6 +242,24 @@ function UploadForm() {
       <label>
         Brand Name:
         <input type="text" name="brandName" value={formData.brandName} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Logo:
+        <input type="text" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Contact Name:
+        <input type="text" name="contactPersonName" value={formData.contactPersonName} onChange={handleChange} />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Brand Contact Phone:
+        <input type="text" name="contactPersonNumber" value={formData.contactPersonNumber} onChange={handleChange} />
       </label>
       <br />
       <br/>      

@@ -74,48 +74,48 @@ uploadVideoController.uploadVideo = async (req, res) => {
     const {
       dateAndTime, questionTypeID, videoURL, adStartTime, duration,
       videoType, questionDesc, optionOne, optionTwo, optionThree,
-      optionFour, optionFive, imageURL, correctOption, padX, padY, text, x, y, colours
+      optionFour, optionFive, imageURL, correctOption, padX, padY, text, x, y, colours, brandName, brandLogo, contactPersonName, contactPersonNumber
     } = req.body;
 
     console.log(dateAndTime);
 
     const videoPATH = `/videos/${videoURL}`;
-    const insertQueryOne = `INSERT INTO videoTables(videoID, dateAndTime, videoURL, adStartTime, duration, videoType,createdAt,updatedAt) VALUES (null, '${dateAndTime}', '${videoPATH}', ${adStartTime}, ${duration}, '${videoType}',NOW(),NOW())`;
+    const insertQueryOne = `INSERT INTO videoTables(dateAndTime, videoURL, adStartTime, duration, videoType,createdAt,updatedAt) VALUES ('${dateAndTime}', '${videoPATH}', ${adStartTime}, ${duration}, '${videoType}',NOW(),NOW())`;
 
     console.log('Final values ob:', padX, padY);
 
    const results =  await connection.query(insertQueryOne);
 
-    if (results) {
-      console.log('Data inserted successfully into videoTable');
+   const insertQueryTwo = `INSERT INTO brandTables (brandID, brandName, brandLogo, contactPersonName, contactPersonPhone, createdAt, updatedAt) VALUES (null, '${brandName}', '${brandLogo}', '${contactPersonName}', ${contactPersonNumber},NOW(),NOW())`;
+  
+   const resultsTwo = await connection.query(insertQueryTwo);
+   
+   if (results && resultsTwo) {
+      console.log('Data inserted successfully into videoTables and brandTables');
 
       const selectQuery = 'SELECT videoID FROM videoTables WHERE videoID = (SELECT MAX(videoID) FROM videoTables)';
       const [resultsSelect] = await connection.query(selectQuery);
 
-      if (resultsSelect.length > 0) {
+      const selectQueryTwo = 'SELECT brandID, brandName FROM brandTables WHERE brandID = (SELECT MAX(brandID) FROM brandTables)';
+      const [resultsSelectTwo] = await connection.query(selectQueryTwo);
+
+
+      if (resultsSelect.length > 0 && resultsSelectTwo.length>0) {
         const selectedVideoID = resultsSelect[0].videoID;
+        const selectedBrandID = resultsSelectTwo[0].brandID;
+        const selectBrandName = resultsSelectTwo[0].brandName;
+        const insertQueryThree = `INSERT INTO videoData (dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, text, x, y, colours,brandID,brandName,createdAt,updatedAt) VALUES ('${dateAndTime}','${questionDesc}',${questionTypeID},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}',${selectedBrandID},'${selectBrandName}',NOW(),NOW())`;
 
-        const insertQueryTwo = `INSERT INTO videoData (videoDataID, dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, text, x, y, colours,createdAt,updatedAt) VALUES (null,'${dateAndTime}','${questionDesc}',${questionTypeID},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}',NOW(),NOW())`;
+        console.log('Final SQL Query:', insertQueryThree);
 
-        console.log('Final SQL Query:', insertQueryTwo);
-
-        const [resultsTwo] = await connection.query(insertQueryTwo);
+        const [resultsTwo] = await connection.query(insertQueryThree);
 
         if (resultsTwo) {
           console.log('Data inserted successfully into videoData');
           return res.status(200).json('Data inserted successfully into videoTables and videoData');
-        } else {
-          console.error('Error inserting data into videoData',error);
-          return res.status(500).json({ error: 'Error inserting data into videoData' });
-        }
-      } else {
-        console.error('No selectedVideoID');
-        return res.status(500).json({ error: 'No selectedVideoID' });
-      }
-    } else {
-      console.error('Error inserting data into videoTables',[resultsOne] );
-      return res.status(500).json({ error: 'Error inserting data into videoTable' });
-    }
+        } 
+      } 
+    } 
   
   } catch (error) {
     console.error('An error occurred:', error);

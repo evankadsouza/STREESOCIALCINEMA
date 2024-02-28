@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const seque = new Sequelize(
-  'streeSocialDB',
+  'mediaPlayerAndClickerDB',
   'root',
   'Abc#12345',
   {

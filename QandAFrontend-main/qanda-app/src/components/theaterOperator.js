@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/theatre.css'; // Ensure the correct path to your CSS file
-
+import config from '../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 export const Theateroperator = () => {
   const [schedulerData, setSchedulerData] = useState([]);
@@ -10,7 +11,7 @@ export const Theateroperator = () => {
 
   useEffect(() => {
     // Fetch scheduler data from the backend API using axios
-    axios.get('http://localhost:8010/api/allSchedulerData')
+    axios.get(`${apiUrl}/api/allSchedulerData`)
       .then(response => {
         setSchedulerData(response.data);
       })
@@ -35,8 +36,29 @@ export const Theateroperator = () => {
 
       const myArray = Object.values(validVideoLinks);//convert object of values - link to array of links
 
+
+      //var validVideoIdUrlLinks = (scheduler.videoIDURL).filter(item => Array.isArray(item) && item.length > 0);
+
+      //const jsonVideoURLLinks = JSON.stringify(validVideoIdUrlLinks);
+
+
+     // const myArray1 = Object.values(validVideoIdUrlLinks);
+     {/*console.log("validVideoLinks",validVideoLinks)
+          validVideoLinks = validVideoLinks.map(item => {
+              return {
+                  ...item,
+                  video_links: JSON.parse(item.video_links),
+              };   
+      });  */}
+
+
+
     // Save valid video links to localStorage
+
+
+
    localStorage.setItem('videoLinks', JSON.stringify(myArray));
+  // localStorage.setItem('jsonVideoURLLinks', jsonVideoURLLinks );
   
     // Redirect to the video player page
   window.location.href = 'video-player'; // Change the path as needed*/}
@@ -56,7 +78,8 @@ export const Theateroperator = () => {
       return <p>No scheduler data available.</p>;
     }
 
-    // console.log("typeof renderSchedulerPlaylist schedulerData ",typeof(schedulerData));
+
+    console.log("typeof renderSchedulerPlaylist schedulerData ",typeof(schedulerData));
   
     //swapnil code eliminate duplicate data
     // Flatten the nested arrays
@@ -65,6 +88,30 @@ export const Theateroperator = () => {
     // Use a Set to eliminate duplicates based on scheduler_id
     const uniqueSchedulers = Array.from(new Set(flattenedSchedulerData.map(scheduler => scheduler.scheduler_id)))
       .map(schedulerId => flattenedSchedulerData.find(scheduler => scheduler.scheduler_id === schedulerId));
+
+  //   return uniqueSchedulers.map((scheduler, index) => (
+  //     <div key={index} className="nested-scheduler-container">
+  //       {scheduler.map((scheduler, innerIndex) => (
+  //         <div key={innerIndex} className="scheduler-playlist-item">
+  //           <h3>{`Slot ${scheduler.slot_index} - ${new Date(scheduler.start_date).toDateString()}`}</h3>
+  //           <ul>
+  //             {scheduler.video_links
+  //               .filter(videoLink => videoLink && Object.values(videoLink)[0]) // Filter out null or empty links
+  //               .map((videoLink, videoIndex) => (
+  //                 <li key={videoIndex}>
+  //                   <a href={Object.values(videoLink)[0]} target="_blank" rel="noopener noreferrer">
+  //                     {`Video ${videoIndex + 1}: View Video`}
+  //                   </a>
+  //                   <br />
+  //                 </li>
+  //               ))}
+  //           </ul>
+  //           <button onClick={() => handlePlayButtonClick(scheduler)}>Play All</button>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   ));
+  // };
 
   return uniqueSchedulers.map((scheduler, index) => (
     <div key={index} className="nested-scheduler-container">
@@ -99,6 +146,8 @@ export const Theateroperator = () => {
   return (
     <>
       <h1>Operator Playlist</h1>
+
+
       <div className="scheduler-playlist-wrapper">
         {renderSchedulerPlaylist()}
       </div>

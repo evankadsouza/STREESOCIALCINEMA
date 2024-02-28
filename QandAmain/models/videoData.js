@@ -1,6 +1,7 @@
 const {DataTypes}= require('sequelize');
 const seque = require('../config/db');
 const videoTable = require('./videoTable');
+const brandTable = require('./brandTable');
 
 const videoData = seque.define('videoData', {
   videoDataID: {
@@ -62,9 +63,17 @@ const videoData = seque.define('videoData', {
     type: DataTypes.TEXT('medium'),
     allowNull: true,
   },
+  brandID:{
+    type:DataTypes.INTEGER,
+  },
+  brandName:{
+    type:DataTypes.STRING,
+  }
 });
 
 videoData.belongsTo(videoTable, { foreignKey: 'videoID' });
+videoData.belongsTo(brandTable, { foreignKey: 'brandID'});
+
 
 seque.sync().then(() => {
   console.log('videoData table created successfully!');

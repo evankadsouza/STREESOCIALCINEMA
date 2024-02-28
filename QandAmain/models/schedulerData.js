@@ -23,6 +23,7 @@ const schedulerData = seque.define('schedulerData',{
     },
 });
 
+
 seque.sync().then(() => {
     console.log('schedulerData table created successfully!');
   }).catch((error) => {
