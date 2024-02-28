@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from 'react-time-picker';
 import '../styles/videoUploadForm.css';
 // In your React.js file
-import config from '../../config';  // Adjust the path accordingly
+import config from '../config';  // Adjust the path accordingly
 const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/userResponse.css";
 // In your React.js file
-import config from '../../config';  // Adjust the path accordingly
+import config from '../config';  // Adjust the path accordingly
 const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 export const UserResponse = () => {

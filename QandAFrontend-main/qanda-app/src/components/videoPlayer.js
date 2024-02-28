@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/videoPlayer.css';
 // In your React.js file
-import config from '../../config';  // Adjust the path accordingly
+import config from '../config';  // Adjust the path accordingly
 const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 {/*
 export const VideoPlayer = () => {

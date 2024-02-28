@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/theatre.css'; // Ensure the correct path to your CSS file
-import config from '../../config';  // Adjust the path accordingly
+import config from '../config';  // Adjust the path accordingly
 const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 export const Theateroperator = () => {
