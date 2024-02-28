@@ -1,6 +1,9 @@
 // Scheduler.js
 import React, { useState, useEffect } from 'react';
 import '../styles/scheduler.css'; // Ensure the correct path to your CSS file
+import config from '../../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
+
 
 const Scheduler = () => {
   const [videos, setVideos] = useState([]);
@@ -24,7 +27,7 @@ const Scheduler = () => {
   useEffect(() => {
     if(selectedTheater){
     // Fetch videos from the backend API using fetch
-    fetch('http://192.168.0.113:8010/api/allVideos')
+    fetch(`${apiUrl}/api/allVideos`)
       .then(response => response.json())
       .then(data => {
         setVideos(data);
@@ -100,7 +103,7 @@ const handleSaveClick = async (schedulerIndex) => {
   };
 console.log(schedulerData);
  try {
-    const response = await fetch('http://192.168.0.113:8010/api/saveSchedulerData', {
+    const response = await fetch(`${apiUrl}/api/saveSchedulerData`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

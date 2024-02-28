@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/theatre.css'; // Ensure the correct path to your CSS file
-
+import config from '../../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 export const Theateroperator = () => {
   const [schedulerData, setSchedulerData] = useState([]);
@@ -10,7 +11,7 @@ export const Theateroperator = () => {
 
   useEffect(() => {
     // Fetch scheduler data from the backend API using axios
-    axios.get('http://localhost:8010/api/allSchedulerData')
+    axios.get(`${apiUrl}/api/allSchedulerData`)
       .then(response => {
         setSchedulerData(response.data);
       })

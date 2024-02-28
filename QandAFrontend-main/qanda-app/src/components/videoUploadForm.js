@@ -4,6 +4,9 @@ import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from 'react-time-picker';
 import '../styles/videoUploadForm.css';
+// In your React.js file
+import config from '../../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 
 
@@ -181,7 +184,7 @@ function UploadForm() {
       console.log("final form data:",formData);
 
      try {
-      const response = await fetch('http://192.168.0.113:8010/api/uploadVideo', {
+      const response = await fetch(`${apiUrl}/api/uploadVideo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/videoPlayer.css';
+// In your React.js file
+import config from '../../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 {/*
 export const VideoPlayer = () => {
  const [videoLinks, setVideoLinks] = useState([]);
@@ -169,7 +172,7 @@ export const VideoPlayer = () => {
 
 
   // Fetch video data from API and compare with the current video URL
-  fetch('http://192.168.0.113:8010/api/allVideos')
+  fetch(`${apiUrl}/api/allVideos`)
   .then(response => response.json())
   .then(data => {
     console.log(data)
@@ -229,7 +232,7 @@ export const VideoPlayer = () => {
 
   const handleChangeDisplayToggle = async (displayToggle, currentVideoID, userResponseToggle) => {
     const fetchData = async () => {
-      const url = 'http://192.168.0.113:8010/api/changeDisplayToggle'; // Replace with your API endpoint
+      const url = `${apiUrl}/api/changeDisplayToggle`; // Replace with your API endpoint
       const data = {
         // Your data to be sent in the request body
         displayToggle: displayToggle,

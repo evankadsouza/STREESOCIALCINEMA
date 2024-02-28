@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/userResponse.css";
+// In your React.js file
+import config from '../../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
 
 export const UserResponse = () => {
   const [userResponse, setUserResponse] = useState([]);
@@ -8,7 +11,7 @@ export const UserResponse = () => {
 
   const fetchData = async () => {
     try {
-      const response =  await fetch("http://localhost:8010/api/getUserResponse");
+      const response =  await fetch(`${apiUrl}/api/getUserResponse`);
       const data =   await response.json();
       console.log("result", (data));
 
