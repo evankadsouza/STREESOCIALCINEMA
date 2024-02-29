@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/scheduler.css'; // Ensure the correct path to your CSS file
 import config from '../config';  // Adjust the path accordingly
-const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
+const apiUrl = `${config.apiBaseUrl}`;
 
 
 const Scheduler = () => {
@@ -212,3 +212,4 @@ const renderDropdowns = (startDate, schedulerIndex) => {
 };
 
 export default Scheduler;
+

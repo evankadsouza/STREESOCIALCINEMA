@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
+import Alert from 'react-popup-alert';
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import TimePicker from 'react-time-picker';
 import '../styles/videoUploadForm.css';
+// In your React.js file
 import config from '../config';  // Adjust the path accordingly
+const apiUrl = `${config.apiBaseUrl}`;
 
 
-const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
+
 
 function UploadForm() {
   const [formData, setFormData] = useState({
@@ -11,11 +17,13 @@ function UploadForm() {
     videoURL: '',
     imageURL: '',
     dateAndTime:'',
+    // brandName:'',
     questionType: '',
     videoType:'',
     questionDesc:'',
     questionTypeID: '',
     option: '',
+    // optionsdesc:'',
     padX:'',
     padY:'',
     text:'',
@@ -42,6 +50,13 @@ function UploadForm() {
   const [videoType,setVideoType] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  
+  const questionMapping = {
+    1: "WOULD YOU LIKE TO A SAMPLE OF THIS LIPSTIK RIGHT NOW?",
+    2: "HONESTLY, HOW WAS THIS AD?",
+    3: "YOUR ANSWER WILL HELP US MAKE SUITABLE & CUSTOMISED OFFERS FOR YOU",
+    4: "WHICH FEMALE ACTOR WAS IN THE AD?",
+  };
 
   
   const optionMapping = {
@@ -163,11 +178,6 @@ function UploadForm() {
     setFormData({ ...formData, 'imageURL' :  myArray[2]});
   }
 
-  const handleBrandLogoChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, brandLogo: file });
-  };  
-
   const handleSubmit = async (e) => {
     console.log('hello')
     e.preventDefault();
@@ -206,7 +216,7 @@ function UploadForm() {
         Image URL:
         <input type="file" onChange={handleImageChange} />
       </label>
-      <br/>
+      <br />
       <br/>     
       <label>
         Date:
@@ -222,7 +232,7 @@ function UploadForm() {
       <br/> 
       <label>
         Brand Logo:
-        <input type="file" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
+        <input type="text" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
       </label>
       <br />
       <br/> 
@@ -434,5 +444,6 @@ function UploadForm() {
     
   );
 }
+
 
 export default UploadForm;

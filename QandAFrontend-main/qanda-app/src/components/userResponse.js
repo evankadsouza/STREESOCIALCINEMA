@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/userResponse.css";
 // In your React.js file
 import config from '../config';  // Adjust the path accordingly
-const apiUrl = `${config.apiBaseUrl}/your/api/endpoint`;
+const apiUrl = `${config.apiBaseUrl}`;
 
 export const UserResponse = () => {
   const [userResponse, setUserResponse] = useState([]);
@@ -83,7 +83,7 @@ export const UserResponse = () => {
                 key={userResponse.userResponseID}
                 className="user-response-details"
               >
-                <td>{userResponse.createdAt}</td>
+                
                 <td>{index + 1}</td>
                 <td>{userResponse.dateAndTime!=null?(new Date(userResponse.dateAndTime)).toLocaleString():''}</td>
                 <td>{userResponse.userName}</td>
