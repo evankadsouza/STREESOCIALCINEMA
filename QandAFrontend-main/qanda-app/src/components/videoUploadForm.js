@@ -112,7 +112,6 @@ function UploadForm() {
     setFormData({
       ...formData,
       option: optionid,
-      // optionsdesc: optionMapping[optionid] || "",
       padX: JSON.stringify(optionMapping[optionid][0]) || "",
       padY: JSON.stringify(optionMapping[optionid][1])|| "",
       text: JSON.stringify(optionMapping[optionid][2]) || "",
@@ -121,7 +120,6 @@ function UploadForm() {
       colours: JSON.stringify(optionMapping[optionid][5]) || "",
     });
   };
-
 
   const handleVideoTypeChange = (videoType) => {
     setVideoType(videoType);
