@@ -9,7 +9,7 @@ allVideoDetailsController.getAllVideoDetails = async  (req,res) =>{
                  
            
 try{
-    const selectQuery = `SELECT DISTINCT displayToggle, userResponseToggle, videoID, imageURL, padX, padY, x, y, text, JSON_OBJECT('optionOne', optionOne, 'optionTwo', optionTwo, 'optionThree', optionThree, 'optionFour',optionFour,'optionFive',optionFive) AS options  FROM videoData`;
+    const selectQuery = `SELECT DISTINCT displayToggle, userResponseToggle, videoID, videoDataID, imageURL, padX, padY, x, y, font, optionNumber, JSON_OBJECT('optionOne', optionOne, 'optionTwo', optionTwo, 'optionThree', optionThree, 'optionFour',optionFour,'optionFive',optionFive) AS options  FROM videoData`;
     const results = await connection.query(selectQuery)
     if(results[0]) {
         const data = results[0];
@@ -18,7 +18,7 @@ try{
             //   userResponseToggle,
             //   videoID
             // });
-            res.status(200).json({ data });
+            res.status(200).json({ results });
           } else {
             res.status(404).json({ error: 'No videos found' });
           }

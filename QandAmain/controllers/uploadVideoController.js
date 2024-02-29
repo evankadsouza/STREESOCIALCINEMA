@@ -73,7 +73,7 @@ uploadVideoController.uploadVideo = async (req, res) => {
   try {
     const {
       dateAndTime, questionTypeID, videoURL, adStartTime, duration,
-      videoType, questionDesc, optionOne, optionTwo, optionThree,
+      videoType, questionDesc, option, optionOne, optionTwo, optionThree,
       optionFour, optionFive, imageURL, correctOption, padX, padY, text, x, y, colours, brandName, brandLogo, contactPersonName, contactPersonNumber
     } = req.body;
 
@@ -104,7 +104,7 @@ uploadVideoController.uploadVideo = async (req, res) => {
         const selectedVideoID = resultsSelect[0].videoID;
         const selectedBrandID = resultsSelectTwo[0].brandID;
         const selectBrandName = resultsSelectTwo[0].brandName;
-        const insertQueryThree = `INSERT INTO videoData (dateAndTime, questionDesc, questionTypeID, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, text, x, y, colours,brandID,brandName,createdAt,updatedAt) VALUES ('${dateAndTime}','${questionDesc}',${questionTypeID},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}',${selectedBrandID},'${selectBrandName}',NOW(),NOW())`;
+        const insertQueryThree = `INSERT INTO videoData (dateAndTime, questionDesc, questionTypeID, optionNumber, optionOne, optionTwo, optionThree, optionFour, optionFive, displayToggle, imageURL, correctOption, videoID, padX, padY, font, x, y, colours,brandID,brandName,createdAt,updatedAt) VALUES ('${dateAndTime}','${questionDesc}',${questionTypeID},${option},'${optionOne}','${optionTwo}','${optionThree}','${optionFour}','${optionFive}',0,'${imageURL}', '${correctOption}', ${selectedVideoID}, '${padX}', '${padY}', '${text}', '${x}', '${y}', '${colours}',${selectedBrandID},'${selectBrandName}',NOW(),NOW())`;
 
         console.log('Final SQL Query:', insertQueryThree);
 
@@ -112,11 +112,11 @@ uploadVideoController.uploadVideo = async (req, res) => {
 
         if (resultsTwo) {
           console.log('Data inserted successfully into videoData');
-          return res.status(200).json('Data inserted successfully into videoTables and videoData');
+          
         } 
       } 
     } 
-  
+    return res.status(200).json({res:'Data inserted successfully into videoTables and videoData'});
   } catch (error) {
     console.error('An error occurred:', error);
     return res.status(500).json({ error: 'An error occurred' });

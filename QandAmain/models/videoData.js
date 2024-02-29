@@ -23,6 +23,9 @@ const videoData = seque.define('videoData', {
   videoID: {
     type: DataTypes.INTEGER,
   },
+  optionNumber:{
+    type:DataTypes.INTEGER,//added manually in workbench after the table was created
+  },
   optionOne: {
     type: DataTypes.STRING(200),
     allowNull: false,
@@ -62,6 +65,24 @@ const videoData = seque.define('videoData', {
   userResponseToggle: {  
     type: DataTypes.TEXT('medium'),
     allowNull: true,
+  },
+  padX:{
+    type:DataTypes.STRING,
+  },
+  padY:{
+    type:DataTypes.STRING,
+  },
+  font:{
+    type:DataTypes.STRING,
+  },
+  x:{
+    type:DataTypes.STRING,
+  },
+  y:{
+    type:DataTypes.STRING,
+  },
+  colours:{
+    type:DataTypes.STRING,
   },
   brandID:{
     type:DataTypes.INTEGER,

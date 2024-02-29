@@ -5,8 +5,7 @@ const userResponseController = {
         try {
             const query = 'SELECT userResponses.*, userData.*, videoData.correctOption, videoData.questionDesc FROM userResponses ' +
               'INNER JOIN userData ON userResponses.userID = userData.userID ' +
-              'INNER JOIN videoData ON userResponses.questionTypeID = videoData.questionTypeID ' +
-        'WHERE userResponses.questionTypeID = videoData.questionTypeID';
+              'INNER JOIN videoData ON userResponses.videoDataID = videoData.videoDataID ';
 
         //const query = 'SELECT * FROM userResponses';
       
