@@ -79,16 +79,16 @@ function UploadForm() {
       {color:"red"}
 ],
 
-5.1: [
-  {"padx1":110,"padx2":180, "padx3":170, "padx4":80, "padx5":80},
-  {"pady1":22, "pady2":22, "pady3":22, "pady4":0, "pady5":22},
-  {text:"font_style_45"},
-  {"x1":0,"x2":0,"x3":0,"x4":0,"x5":0},
-  {"y1":230,"y2":345,"y3":460,"y4":575, "y5":690},
-  {color:"red"}
-],
+// 5.1: [
+//   {"padx1":110,"padx2":180, "padx3":170, "padx4":80, "padx5":80},
+//   {"pady1":22, "pady2":22, "pady3":22, "pady4":0, "pady5":22},
+//   {text:"font_style_45"},
+//   {"x1":0,"x2":0,"x3":0,"x4":0,"x5":0},
+//   {"y1":230,"y2":345,"y3":460,"y4":575, "y5":690},
+//   {color:"red"}
+// ],
 
-5.2: [
+5: [
  {"padx1":20,"padx2":20, "padx3":45, "padx4":128, "padx5":39},
   {"pady1":22, "pady2":22, "pady3":20, "pady4":22, "pady5":17},
   {text:"font_style_45"},
@@ -216,24 +216,6 @@ function UploadForm() {
       <br/>
       <br/>     
       <label>
-       Brand Logo:
-      <input type="file" accept="image/*" onChange={handleBrandLogoChange} />
-      </label>
-      <br/>
-      <br/>  
-      <label>
-      Contact Person Name:
-     <input type="text" name="contactPersonName" value={formData.contactPersonName} onChange={handleChange} />
-     </label>
-     <br />
-     <br/>
-     <label>
-      Contact Person Number:
-     <input type="text" name="contactPersonNumber" value={formData.contactPersonNumber} onChange={handleChange} />
-     </label>
-    <br/>
-    <br/>
-      <label>
         Date:
         <input type="datetime-local" name="dateAndTime" value={formData.dateAndTime} onChange={handleChange} />
       </label>
@@ -244,12 +226,12 @@ function UploadForm() {
         <input type="text" name="brandName" value={formData.brandName} onChange={handleChange} />
       </label>
       <br />
-      <br/> 
-      <label>
-        Brand Logo:
-        <input type="text" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
+      <br/>    
+       <label>
+       Brand Logo:
+      <input type="file" accept="image/*" onChange={handleBrandLogoChange} />
       </label>
-      <br />
+      <br/>
       <br/> 
       <label>
         Brand Contact Name:
@@ -320,7 +302,7 @@ function UploadForm() {
           onChange={handleoption}
         >
           <option value="">Select Available Options</option>
-          {[2, 3, 4, 5.1, 5.2].map((option) => (
+          {[2, 3, 4, 5].map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
@@ -348,7 +330,6 @@ function UploadForm() {
           name="padY"
           value={formData.padY}
           onChange={handleoption}
-          
           readOnly
         />
       </label>
@@ -456,7 +437,6 @@ function UploadForm() {
       }}>Upload Video</button>
       <br/>
     </form>
-    
   );
 }
 
