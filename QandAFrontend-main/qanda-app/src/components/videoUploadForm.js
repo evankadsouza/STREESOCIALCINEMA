@@ -42,13 +42,6 @@ function UploadForm() {
   const [videoType,setVideoType] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  
-  const questionMapping = {
-    1: "WOULD YOU LIKE TO A SAMPLE OF THIS LIPSTIK RIGHT NOW?",
-    2: "HONESTLY, HOW WAS THIS AD?",
-    3: "YOUR ANSWER WILL HELP US MAKE SUITABLE & CUSTOMISED OFFERS FOR YOU",
-    4: "WHICH FEMALE ACTOR WAS IN THE AD?",
-  };
 
   
   const optionMapping = {
@@ -216,24 +209,6 @@ function UploadForm() {
       <br/>
       <br/>     
       <label>
-       Brand Logo:
-      <input type="file" accept="image/*" onChange={handleBrandLogoChange} />
-      </label>
-      <br/>
-      <br/>  
-      <label>
-      Contact Person Name:
-     <input type="text" name="contactPersonName" value={formData.contactPersonName} onChange={handleChange} />
-     </label>
-     <br />
-     <br/>
-     <label>
-      Contact Person Number:
-     <input type="text" name="contactPersonNumber" value={formData.contactPersonNumber} onChange={handleChange} />
-     </label>
-    <br/>
-    <br/>
-      <label>
         Date:
         <input type="datetime-local" name="dateAndTime" value={formData.dateAndTime} onChange={handleChange} />
       </label>
@@ -247,7 +222,7 @@ function UploadForm() {
       <br/> 
       <label>
         Brand Logo:
-        <input type="text" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
+        <input type="file" name="brandLogo" value={formData.brandLogo} onChange={handleChange} />
       </label>
       <br />
       <br/> 
