@@ -265,7 +265,7 @@ function UploadForm() {
       </label>
       <br />
       <br/>      
-      <label>
+      {/* <label>
         Question Type ID:
         <select
           name="questionTypeID"
@@ -279,9 +279,10 @@ function UploadForm() {
             </option>
           ))}
         </select>
-      </label>
+      </label> 
       <br />
       <br />
+      */}
       <label>
         Question:
         <input
@@ -289,102 +290,11 @@ function UploadForm() {
           name="questionDesc"
           value={formData.questionDesc}
           onChange={handleChange}
-          readOnly
         />
       </label> 
       <br />
       <br />
       <label>
-        Option Type:
-        <select
-          name="option"
-          value={formData.option}
-          onChange={handleoption}
-        >
-          <option value="">Select Available Options</option>
-          {[2, 3, 4, 5].map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
-      <br />
-      <br />
-      <label>
-        Padx:
-        <input
-          type="text"
-          name="padX"
-          value={formData.padX}
-          onChange={handleoption}
-          readOnly
-        />
-      </label>
-      <br />
-      <br/>  
-      <label>
-        Pady:
-        <input
-          type="text"
-          name="padY"
-          value={formData.padY}
-          onChange={handleoption}
-          readOnly
-        />
-      </label>
-      <br />
-      <br/>     
-      <label>
-      <label>
-        Text:
-        <input
-          type="text"
-          name="text"
-          value={formData.text}
-          onChange={handleoption}
-          readOnly
-        />
-      </label>
-      <br />
-      <br/> 
-      <label>
-        X:
-        <input
-          type="text"
-          name="x"
-          value={formData.x}
-          onChange={handleoption}
-          readOnly
-        />
-      </label>
-      <br />
-      <br/> 
-      <label>
-        Y:
-        <input
-          type="text"
-          name="y"
-          value={formData.y}
-          onChange={handleoption}
-          readOnly
-        />
-      </label>
-      <br />
-      <br/> 
-      <label>
-        Color:
-        <input
-          type="text"
-          name="colours"
-          value={formData.colours}
-          onChange={handleoption}
-          readOnly
-        />
-
-      </label>
-      <br />
-      <br/> 
       Duration ( in minutes ):
         <input type="text" name="duration" value={formData.duration} onChange={handleChange} />
       </label>
@@ -430,8 +340,97 @@ function UploadForm() {
       Seconds when AD starts:
         <input type="text" name="adStartTime" value={formData.adStartTime} onChange={handleChange} />
       </label>
-      <br />
       <br/>
+      <br/>
+      <label>
+        Option Type:
+        <select
+          name="option"
+          value={formData.option}
+          onChange={handleoption}
+        >
+          <option value="">Select Available Options</option>
+          {[2, 3, 4, 5].map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </label>
+      <br />
+      <br />
+      <label>
+        Padx:
+        <input
+          type="text"
+          name="padX"
+          value={formData.padX}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/>  
+      <label>
+        Pady:
+        <input
+          type="text"
+          name="padY"
+          value={formData.padY}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/>     
+      <label>
+        Text:
+        <input
+          type="text"
+          name="text"
+          value={formData.text}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        X:
+        <input
+          type="text"
+          name="x"
+          value={formData.x}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Y:
+        <input
+          type="text"
+          name="y"
+          value={formData.y}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/> 
+      <label>
+        Color:
+        <input
+          type="text"
+          name="colours"
+          value={formData.colours}
+          onChange={handleoption}
+          readOnly
+        />
+      </label>
+      <br />
+      <br/> 
       <button type="submit" onClick={() =>{
         buttonClick = true
       }}>Upload Video</button>
